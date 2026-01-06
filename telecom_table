@@ -1,0 +1,29 @@
+-- 1. Create the table
+CREATE TABLE churn (
+    customer_id SERIAL PRIMARY KEY,
+    churn_label VARCHAR(3),
+    contract_type VARCHAR(20),
+    account_length_in_months INT,
+    monthly_charge NUMERIC(10,2),
+    total_charges NUMERIC(10,2),
+    customer_service_calls INT,
+    unlimited_data_plan VARCHAR(3),
+    avg_monthly_gb_download NUMERIC(10,2),
+    extra_data_charges NUMERIC(10,2),
+    intl_plan VARCHAR(3),
+    intl_calls INT,
+    intl_mins NUMERIC(10,2),
+    extra_international_charges NUMERIC(10,2),
+    churn_category VARCHAR(50)
+);
+
+-- 2. Insert sample data (you can add more rows)
+INSERT INTO churn (
+    churn_label, contract_type, account_length_in_months, monthly_charge, total_charges,
+    customer_service_calls, unlimited_data_plan, avg_monthly_gb_download, extra_data_charges,
+    intl_plan, intl_calls, intl_mins, extra_international_charges, churn_category
+) VALUES
+('Yes', 'Month-to-Month', 5, 35.50, 177.50, 3, 'Yes', 10.5, 0.0, 'No', 1, 15, 0.0, 'Service'),
+('No', 'One Year', 12, 45.00, 540.00, 1, 'No', 20.0, 5.0, 'Yes', 5, 300, 15.0, 'Price'),
+('Yes', 'Two Year', 24, 50.00, 1200.00, 2, 'Yes', 25.0, 0.0, 'No', 0, 0, 0.0, 'Contract'),
+('Yes', 'Month-to-Month', 3, 30.00, 90.00, 5, 'No', 8.0, 2.0, 'Yes', 2, 120, 5.0, 'Service');
