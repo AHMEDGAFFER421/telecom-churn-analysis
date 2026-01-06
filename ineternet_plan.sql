@@ -21,3 +21,4 @@ SELECT *,
        RANK() OVER (PARTITION BY usage_tier ORDER BY total_gb_unlimited DESC) AS gb_rank
 FROM data_plan
 ORDER BY unlimited_plan_churned DESC;
+--Analyze churn patterns for unlimited vs limited data plans, segmented by usage tiers and contract types.
