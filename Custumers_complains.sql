@@ -17,3 +17,4 @@ FROM churn
 GROUP BY contract_type, tenure
 ORDER BY avg_calls_churned DESC;
 --Investigate whether higher customer service calls are associated with churn, across contract types and tenure.
+
