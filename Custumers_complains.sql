@@ -1,4 +1,4 @@
-SELECT
+WITH CTE AS    (SELECT
     contract_type AS contract,
     CASE 
         WHEN account_length_in_months < 6 THEN 'half_year'
@@ -13,7 +13,14 @@ SELECT
     AVG(customer_service_calls) FILTER (WHERE churn_label = 'Yes') AS avg_calls_churned,
     SUM(customer_service_calls) FILTER (WHERE churn_label = 'No') AS total_calls_not_churned,
     AVG(customer_service_calls) FILTER (WHERE churn_label = 'No') AS avg_calls_not_churned
+	
 FROM churn  
-GROUP BY contract_type, tenure
-ORDER BY avg_calls_churned DESC;
+GROUP BY contract_type, tenure)
+
+SELECT *,
+	   AVG(avg_calls_churned)
+		OVER (PARTITION BY contract) AS avg_calls_churned_contract
+FROM CTE
+ORDER BY churn_count DESC 
+
 --Investigate whether higher customer service calls are associated with churn, across contract types and tenure.
