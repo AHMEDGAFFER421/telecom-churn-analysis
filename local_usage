@@ -1,0 +1,22 @@
+WITH local_usage AS
+( SELECT 
+			contract_type AS contract,
+			COUNT(*) FILTER (WHERE churn_label = 'Yes' ) AS local_churned,
+			COUNT(*) FILTER (WHERE churn_label = 'No' ) AS local_non_churned,
+			CASE 
+				WHEN local_mins < 400 THEN 'low_usage' 
+				WHEN local_mins >= 400 AND local_mins < 800 THEN 'mid_usage'
+				ELSE 'high_usage0' END AS tier,
+			AVG(local_calls) FILTER (WHERE churn_label = 'Yes') AS avg_local_calls_churned,
+			AVG(local_calls) FILTER (WHERE churn_label = 'No') AS avg_local_calls_non_churned,
+			AVG(monthly_charge) FILTER (WHERE churn_label = 'Yes') AS avg_monthly_charge_churn,
+			AVG(monthly_charge) FILTER (WHERE churn_label = 'No') AS avg_monthly_charge_non_churn,
+			COUNT(*) FILTER (WHERE churn_label = 'Yes')::float / COUNT(*) AS churn_rate,
+			COUNT(*) FILTER (WHERE churn_label = 'Yes') AS churn_count, SUM(total_charges) FILTER (WHERE churn_label = 'Yes') AS loses,
+			SUM(total_charges) FILTER (WHERE churn_label = 'No') AS profits
+			FROM churn
+			GROUP BY contract_type, tier)
+SELECT *,
+RANK () OVER (PARTITION BY contract ORDER BY churn_rate DESC) AS rank_usage 
+FROM local_usage 
+ORDER BY contract, rank_usage DESC
