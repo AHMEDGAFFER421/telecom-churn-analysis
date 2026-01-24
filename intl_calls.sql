@@ -19,4 +19,3 @@ FROM churn
 WHERE churn_label = 'Yes'
 GROUP BY contract_type, usage_tier
 ORDER BY intl_plan_churned DESC;
--- Explore churn among customers with international plans versus usage tiers, including avg calls and minutes.
